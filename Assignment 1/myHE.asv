@@ -9,7 +9,7 @@ output = uint8(zeros(dimX,dimY));
 cdf_in = myCDF(input);
 for i = 1 : dimX
     for j = 1 : dimY
-        output(i, j) = cdf_in(input(i, j));
+        output(i, j) = cdf_in()
     end
 end
 
