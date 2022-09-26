@@ -10,7 +10,7 @@ output = uint8(zeros(dimX,dimY));
 stepSizeX = ceil(dimX / numtiles(1));
 stepSizeY = ceil(dimY / numtiles(2));
 
-localHE = uint8(zeros(dimX, dimY));
+cdfs = zeros(256, 1, numtiles(1), numtiles(2));
 
 % Local Histogram Section
 for i = 1 : numtiles(1)
@@ -27,8 +27,7 @@ for i = 1 : numtiles(1)
         end
         
         tempImage = input(startX:endX, startY:endY);
-        localHE(startX:endX, startY:endY) = myHE(tempImage);
-        
+        cdfs(:, :, i, j) = myCDF(tempImage);
     end
 end
 
@@ -40,25 +39,38 @@ for i = 1 : dimX
         % Checking if current pixel is on the corner
         if i <= ipX
             if j <= ipY
-                intensity = localHE(i, j);
+                % left top
+                intensity = cdfs(input(i, j) + 1, 1, 1, 1);
             elseif j > dimY - ipY
-                intensity = localHE(i, j);
+                % right top
+                intensity = cdfs(input(i, j) + 1, 1, 1, numtiles(2));
             else
-                intensity = 128;
+                % top
+                WEST = cdfs(input(i, j) + 1, 1, 1, ceil((j-ipY)/stepSizeY));
+                EAST = cdfs(input(i, j) + 1, 1, 1, ceil((j-ipY)/stepSizeY) + 1);
+                distanceW = mod(j-ipY, stepSizeY);
+                distanceE = stepSizeY - distanceW;
+                intensity = WEST*distanceE/stepSizeY + EAST*distanceW/stepSizeY;
             end
         elseif i > dimX - ipX
             if j <= ipY
-                intensity = localHE(i, j);
+                % left bottom
+                intensity = cdfs(input(i, j) + 1, 1, numtiles(1), 1);
             elseif j > dimY - ipY
-                intensity = localHE(i, j);
+                % right bottom
+                intensity = cdfs(input(i, j) + 1, 1, numtiles(1), numtiles(2));
             else
+                % bottom
                 intensity = 128;
             end
         elseif j <= ipY
+            % left
             intensity = 128;
         elseif j > dimY - ipY
+            % right
             intensity = 128;
         else
+            % middle
             intensity = 64;
         end
 

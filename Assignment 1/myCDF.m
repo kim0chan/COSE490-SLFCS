@@ -14,7 +14,7 @@ for i = 1 : dimX
     end
 end
 
-output(1) = 255*histogram(1)/(dimX * dimY) - 1;
+output(1) = 255*histogram(1)/(dimX * dimY);
 
 for i = 2 : 256
     output(i) = output(i-1) + 255*histogram(i)/(dimX * dimY);
