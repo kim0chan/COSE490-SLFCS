@@ -49,8 +49,15 @@ for i = 1 : dimX
                 WEST = cdfs(input(i, j) + 1, 1, 1, ceil((j-ipY)/stepSizeY));
                 EAST = cdfs(input(i, j) + 1, 1, 1, ceil((j-ipY)/stepSizeY) + 1);
                 distanceW = mod(j-ipY, stepSizeY);
-                distanceE = stepSizeY - distanceW;
-                intensity = WEST*distanceE/stepSizeY + EAST*distanceW/stepSizeY;
+                if distanceW == 0
+                    % center case.
+                    % Since tile size of the example is 89x89,
+                    % 44th pixel in a tile is stuck in the very middle.
+                    intensity = cdfs(input(i, j) + 1, 1, 1, ceil(j/stepSizeY));
+                else
+                    distanceE = stepSizeY - distanceW;
+                    intensity = WEST*distanceE/stepSizeY + EAST*distanceW/stepSizeY;
+                end
             end
         elseif i > dimX - ipX
             if j <= ipY
@@ -61,17 +68,57 @@ for i = 1 : dimX
                 intensity = cdfs(input(i, j) + 1, 1, numtiles(1), numtiles(2));
             else
                 % bottom
-                intensity = 128;
+                WEST = cdfs(input(i, j) + 1, 1, numtiles(1), ceil((j-ipY)/stepSizeY));
+                EAST = cdfs(input(i, j) + 1, 1, numtiles(1), ceil((j-ipY)/stepSizeY) + 1);
+                distanceW = mod(j-ipY, stepSizeY);
+                if distanceW == 0
+                    % center case.
+                    intensity = cdfs(input(i, j) + 1, 1, numtiles(1), ceil(j/stepSizeY));
+                else
+                    distanceE = stepSizeY - distanceW;
+                    intensity = WEST*distanceE/stepSizeY + EAST*distanceW/stepSizeY;
+                end
             end
         elseif j <= ipY
             % left
-            intensity = 128;
+            NORTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), 1);
+            SOUTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, 1);
+            distanceN = mod(i-ipX, stepSizeX);
+            if distanceN == 0
+                % center case.
+                intensity = cdfs(input(i, j) + 1, 1, ceil(i/stepSizeX), 1);
+            else
+                distanceS = stepSizeX - distanceN;
+                intensity = NORTH*distanceS/stepSizeX + SOUTH*distanceN/stepSizeX;
+            end
         elseif j > dimY - ipY
             % right
-            intensity = 128;
+            NORTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), numtiles(2));
+            SOUTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, numtiles(2));
+            distanceN = mod(i-ipX, stepSizeX);
+            if distanceN == 0
+                % center case.
+                intensity = cdfs(input(i, j) + 1, 1, ceil(i/stepSizeX), numtiles(2));
+            else
+                distanceS = stepSizeX - distanceN;
+                intensity = NORTH*distanceS/stepSizeX + SOUTH*distanceN/stepSizeX;
+            end
         else
             % middle
-            intensity = 64;
+            NW = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), ceil((j-ipY)/stepSizeY));
+            NE = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), ceil((j-ipY)/stepSizeY) + 1);
+            SW = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, ceil((j-ipY)/stepSizeY));
+            SE = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, ceil((j-ipY)/stepSizeY) + 1);
+            
+            distanceN = mod(i-ipX, stepSizeX);
+            distanceS = stepSizeX - distanceN;
+            distanceW = mod(j-ipY, stepSizeY);
+            distanceE = stepSizeY - distanceW;
+
+            NORTH = NW*distanceE/stepSizeX + NE*distanceW/stepSizeX;
+            SOUTH = SW*distanceE/stepSizeX + SE*distanceW/stepSizeX;
+
+            intensity = NORTH*distanceS/stepSizeY + SOUTH*distanceN/stepSizeY;
         end
 
         output(i, j) = intensity;
