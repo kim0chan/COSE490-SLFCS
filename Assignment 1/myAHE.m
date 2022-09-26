@@ -111,18 +111,32 @@ for i = 1 : dimX
             SE = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, ceil((j-ipY)/stepSizeY) + 1);
             
             distanceN = mod(i-ipX, stepSizeX);
-            distanceS = stepSizeX - distanceN;
             distanceW = mod(j-ipY, stepSizeY);
-            distanceE = stepSizeY - distanceW;
+            if distanceN == 0
+                if distanceW == 0
+                    intensity = cdfs(input(i, j) + 1, 1, ceil(i/stepSizeX), ceil(j/stepSizeY));
+                else
+                    WEST = cdfs(input(i, j) + 1, 1, ceil(i/stepSizeX), ceil((j-ipY)/stepSizeY));
+                    EAST = cdfs(input(i, j) + 1, 1, ceil(i/stepSizeX), ceil((j-ipY)/stepSizeY + 1));
 
-            NORTH = NW*distanceE/stepSizeX + NE*distanceW/stepSizeX;
-            SOUTH = SW*distanceE/stepSizeX + SE*distanceW/stepSizeX;
+                    intensity = WEST*(stepSizeY-distanceW)/stepSizeY + EAST*distanceW/stepSizeY;
+                end
+            elseif distanceW == 0
+                NORTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), ceil(j/stepSizeY));
+                SOUTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX + 1), ceil(j/stepSizeY));
 
-            intensity = NORTH*distanceS/stepSizeY + SOUTH*distanceN/stepSizeY;
+                intensity = NORTH*(stepSizeX-distanceN)/stepSizeX + SOUTH*distanceN/stepSizeX;
+            else
+                distanceS = stepSizeX - distanceN;
+                distanceE = stepSizeY - distanceW;
+
+                NORTH = NW*distanceE/stepSizeX + NE*distanceW/stepSizeX;
+                SOUTH = SW*distanceE/stepSizeX + SE*distanceW/stepSizeX;
+
+                intensity = NORTH*distanceS/stepSizeY + SOUTH*distanceN/stepSizeY;
+            end        
         end
 
         output(i, j) = intensity;
     end
-end
-
 end
