@@ -49,7 +49,7 @@ for i = 1 : dimX
             if j <= ipY
                 % left top
                 intensity = cdfs(input(i, j) + 1, 1, 1, 1);
-            elseif j > dimY - ipY
+            elseif j >= dimY - ipY
                 % right top
                 intensity = cdfs(input(i, j) + 1, 1, 1, numtiles(2));
             else
@@ -67,11 +67,11 @@ for i = 1 : dimX
                     intensity = WEST*distanceE/stepSizeY + EAST*distanceW/stepSizeY;
                 end
             end
-        elseif i > dimX - ipX
+        elseif i >= dimX - ipX
             if j <= ipY
                 % left bottom
                 intensity = cdfs(input(i, j) + 1, 1, numtiles(1), 1);
-            elseif j > dimY - ipY
+            elseif j >= dimY - ipY
                 % right bottom
                 intensity = cdfs(input(i, j) + 1, 1, numtiles(1), numtiles(2));
             else
@@ -99,7 +99,7 @@ for i = 1 : dimX
                 distanceS = stepSizeX - distanceN;
                 intensity = NORTH*distanceS/stepSizeX + SOUTH*distanceN/stepSizeX;
             end
-        elseif j > dimY - ipY
+        elseif j >= dimY - ipY
             % right
             NORTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX), numtiles(2));
             SOUTH = cdfs(input(i, j) + 1, 1, ceil((i-ipX)/stepSizeX) + 1, numtiles(2));

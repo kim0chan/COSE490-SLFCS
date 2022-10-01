@@ -8,7 +8,7 @@
 %
 % Loading input image
 %
-input=imread('washed_out_smillah.tif');
+input=imread('washed_out_pollen.tif');
 
 % Show Histogram, CDF plot, and Input Image
 cdf_in = myCDF(input);
@@ -47,8 +47,8 @@ title('Histogram equalization');
 % Adaptive histogram equalization
 %
 
-nBlockX = 2;
-nBlockY = 2;
+nBlockX = 10;
+nBlockY = 10;
 
 % Run Adaptive Histogram Equalization
 Out_AHE = myAHE(input, [nBlockX nBlockY]);
