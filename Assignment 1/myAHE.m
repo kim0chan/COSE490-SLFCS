@@ -12,6 +12,14 @@ stepSizeY = ceil(dimY / numtiles(2));
 
 cdfs = zeros(256, 1, numtiles(1), numtiles(2));
 
+% Exception
+if numtiles(1) == 1
+    if numtiles(2) == 1
+        output = myHE(input);
+        return;
+    end
+end
+
 % Local Histogram Section
 for i = 1 : numtiles(1)
     startX = (i - 1) * stepSizeX + 1;
