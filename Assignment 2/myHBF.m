@@ -1,6 +1,5 @@
 input=imread('racing-blur.png');
 
-
 figure,imshow(input);
 title('Input Image');
 

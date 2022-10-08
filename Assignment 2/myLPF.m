@@ -24,6 +24,26 @@ figure,imshow(log(1+abs((F))), []);
 % Creating Frequency filter and apply - High pass filter
 %
 
+
+% Parameters
+n = 4;
+D_0 = 200;
+
+
+H = zeros(PQ(1), PQ(2));
+for i = 1 : PQ(1)
+    for j = 1 : PQ(2)
+        D = sqrt((i - PQ(1)/2)^2 + (j - PQ(2)/2)^2);
+        H(i, j) = 1 / (1 + (D / D_0) ^ (2*n));
+    end
+end
+
+% Printing H (for report)
+ figure, imshow(H);
+
+F = F .* H;
+
+
 %
 % ToDo
 %
