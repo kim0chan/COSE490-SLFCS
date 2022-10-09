@@ -26,16 +26,25 @@ figure,imshow(log(1+abs((F))), []);
 
 
 % Parameters
-k = 0.5;
+k = 2;
+n = 5;
+D_0 = 40;
 
-% Generating g
-g = zeros(PQ(1), PQ(2));
+% Generating 1 + k*[1 - H_LP(u, v)]
+H = zeros(PQ(1), PQ(2));
 for i = 1 : PQ(1)
     for j = 1 : PQ(2)
-
+        D = sqrt((i - PQ(1)/2)^2 + (j - PQ(2)/2)^2);
+        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
+        H(i, j) = 1 + k*(1-H_LP_uv);
     end
 end
 
+% Printing H (!FOR REPORT!)
+%figure, imshow(H);
+
+% Generating F
+F = F .* H;
 
 %
 % ToDo

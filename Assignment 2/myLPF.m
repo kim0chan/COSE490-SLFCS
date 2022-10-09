@@ -43,7 +43,7 @@ end
 %figure, imshow(H);
 
 % Generating F
-F = F .* H;
+F = H .* F;
 
 
 %
