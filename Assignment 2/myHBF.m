@@ -24,6 +24,19 @@ figure,imshow(log(1+abs((F))), []);
 % Creating Frequency filter and apply - High pass filter
 %
 
+
+% Parameters
+k = 0.5;
+
+% Generating g
+g = zeros(PQ(1), PQ(2));
+for i = 1 : PQ(1)
+    for j = 1 : PQ(2)
+
+    end
+end
+
+
 %
 % ToDo
 %

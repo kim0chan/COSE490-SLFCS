@@ -26,10 +26,11 @@ figure,imshow(log(1+abs((F))), []);
 
 
 % Parameters
-n = 4;
-D_0 = 200;
+n = 2;
+D_0 = 100;
 
 
+% Calculating H
 H = zeros(PQ(1), PQ(2));
 for i = 1 : PQ(1)
     for j = 1 : PQ(2)
@@ -38,9 +39,10 @@ for i = 1 : PQ(1)
     end
 end
 
-% Printing H (for report)
- figure, imshow(H);
+% Printing H (!FOR REPORT!)
+%figure, imshow(H);
 
+% Generating F
 F = F .* H;
 
 
