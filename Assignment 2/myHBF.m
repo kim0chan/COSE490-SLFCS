@@ -40,11 +40,15 @@ for i = 1 : PQ(1)
     end
 end
 
-% Printing H (!FOR REPORT!)
-%figure, imshow(H);
 
 % Generating F
 F = F .* H;
+
+% Printing H (!FOR REPORT!)
+figure, imshow(H);
+
+% Printing F (!FOR REPORT!)
+figure, imshow(log(1+abs((F))), []);
 
 %
 % ToDo
