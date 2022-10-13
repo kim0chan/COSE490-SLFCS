@@ -28,7 +28,7 @@ figure,imshow(log(1+abs((F))), []);
 n = 3;
 D_0 = 50;
 
-% Generating 1 + k*[1 - H_LP(u, v)]
+% Generating Filter
 H = zeros(PQ(1), PQ(2));
 
 % Input suspicious noise point
