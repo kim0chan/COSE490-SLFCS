@@ -26,11 +26,12 @@ figure,imshow(log(1+abs((F))), []);
 
 % Parameters
 n = 3;
-D_0 = 40;
+D_0 = 50;
 
 % Generating 1 + k*[1 - H_LP(u, v)]
 % Hard-coding section.
 H = zeros(PQ(1), PQ(2));
+
 for i = 1 : PQ(1)
     for j = 1 : PQ(2)
         D = sqrt((i - 130)^2 + (j - 830)^2);
