@@ -322,10 +322,6 @@ end
 F = F .* H;
 
 
-% Generating F
-F = F .* H;
-
-
 % Printing H (!FOR REPORT!)
 figure, imshow(H);
 
