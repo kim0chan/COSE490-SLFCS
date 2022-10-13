@@ -29,7 +29,6 @@ n = 3;
 D_0 = 50;
 
 % Generating 1 + k*[1 - H_LP(u, v)]
-% Hard-coding section.
 H = zeros(PQ(1), PQ(2));
 
 % Input suspicious noise point
