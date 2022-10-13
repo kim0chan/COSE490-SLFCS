@@ -32,298 +32,53 @@ D_0 = 50;
 % Hard-coding section.
 H = zeros(PQ(1), PQ(2));
 
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
+% Input suspicious noise point
+n_point = 17;
+suspect = zeros(n_point, 2);
 
+suspect(1, :) = [512, 84];
+suspect(2, :) = [444, 130];
+suspect(3, :) = [580, 130];
 
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 84)^2 + (j - 513)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 601)^2 + (j - 513)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 343)^2 + (j - 126)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 343)^2 + (j - 898)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
+suspect(4, :) = [512, 176];
+suspect(5, :) = [194, 40];
+suspect(6, :) = [126, 84];
+suspect(7, :) = [194, 130];
 
+suspect(8, :) = [830, 130];
+suspect(9, :) = [830, 40];
+suspect(10, :) = [900, 84];
+suspect(11, :) = [900, 176];
+suspect(12, :) = [966, 130];
 
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 84)^2 + (j - 126)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 600)^2 + (j - 126)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 600)^2 + (j - 898)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 84)^2 + (j - 898)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
+suspect(13, :) = [900, 342];
+suspect(14, :) = [830, 296];
+suspect(15, :) = [830, 388];
 
+suspect(16, :) = [900, 508];
+suspect(17, :) = [966, 554];
 
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 58)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
+for k = 1: size(suspect, 1)
+    for i = 1 : PQ(1)
+        for j = 1 : PQ(2)
+            D = sqrt((i - suspect(k, 2))^2 + (j - suspect(k, 1))^2);
+            H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
+            H(i, j) = 1 - H_LP_uv;
+        end
     end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 58)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
+    F = F .* H;
+    for i = 1 : PQ(1)
+        for j = 1 : PQ(2)
+            D = sqrt((i - PQ(1) + suspect(k, 2))^2 + (j - PQ(2) + suspect(k, 1))^2);
+            H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
+            H(i, j) = 1 - H_LP_uv;
+        end
     end
+    F = F .* H;
 end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 966)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 966)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
 
-
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 176)^2 + (j - 126)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 508)^2 + (j - 126)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 508)^2 + (j - 898)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 176)^2 + (j - 898)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-
-
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 40)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 644)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 40)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 644)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-
-
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 298)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 386)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 298)^2 + (j - 830)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 386)^2 + (j - 194)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-
-
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 582)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 442)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 130)^2 + (j - 442)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 554)^2 + (j - 582)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-
-
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 176)^2 + (j - 512)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-for i = 1 : PQ(1)
-    for j = 1 : PQ(2)
-        D = sqrt((i - 508)^2 + (j - 512)^2);
-        H_LP_uv = 1 / (1 + (D / D_0) ^ (2*n));
-        H(i, j) = 1-H_LP_uv;
-    end
-end
-F = F .* H;
-
-
-% Printing H (!FOR REPORT!)
-figure, imshow(H);
+% Printing H (!FOR TEST!)
+%figure, imshow(H);
 
 % Printing F (!FOR REPORT!)
 figure, imshow(log(1+abs((F))), []);
