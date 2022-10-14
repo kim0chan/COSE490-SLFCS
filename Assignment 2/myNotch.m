@@ -1,4 +1,4 @@
-input=imread('cat-halftone.png');
+input=imread('text-sineshade.tif');
 
 figure,imshow(input);
 title('Input Image');
@@ -24,38 +24,66 @@ figure,imshow(log(1+abs((F))), []);
 % Creating Frequency filter and apply - High pass filter
 %
 
-% Parameters
-n = 3;
-D_0 = 50;
-
 % Generating Filter
 H = zeros(PQ(1), PQ(2));
 
 % Input suspicious noise point
-n_point = 17;
+% for cat-halftone.png
+% n_point = 17;
+% suspect = zeros(n_point, 2);
+% 
+% suspect(1, :) = [512, 84];
+% suspect(2, :) = [444, 130];
+% suspect(3, :) = [580, 130];
+% 
+% suspect(4, :) = [512, 176];
+% suspect(5, :) = [194, 40];
+% suspect(6, :) = [126, 84];
+% suspect(7, :) = [194, 130];
+% 
+% suspect(8, :) = [830, 130];
+% suspect(9, :) = [830, 40];
+% suspect(10, :) = [900, 84];
+% suspect(11, :) = [900, 176];
+% suspect(12, :) = [966, 130];
+% 
+% suspect(13, :) = [900, 342];
+% suspect(14, :) = [830, 296];
+% suspect(15, :) = [830, 388];
+% 
+% suspect(16, :) = [900, 508];
+% suspect(17, :) = [966, 554];
+%
+% n = 3;
+% D_0 = 50;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Input suspicious noise point
+% for saturn-rings-sinusoidal-interf.tif
+% n_point = 32;
+% suspect = zeros(n_point, 2);
+% 
+% for i = 1 : n_point
+%     suspect(i, :) = [674, 20*i];
+% end
+% 
+% n = 3;
+% D_0 = 20;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Input suspicious noise point
+% for text-sineshade.tif
+n_point = 1;
 suspect = zeros(n_point, 2);
 
-suspect(1, :) = [512, 84];
-suspect(2, :) = [444, 130];
-suspect(3, :) = [580, 130];
+for i = 1 : n_point
+    suspect(2*(i-1) + 1, :) = [786, 662 + 24 * i];
+    suspect(2*(i-1) + 2, :) = [758, 662 + 24 * i];
+end
 
-suspect(4, :) = [512, 176];
-suspect(5, :) = [194, 40];
-suspect(6, :) = [126, 84];
-suspect(7, :) = [194, 130];
-
-suspect(8, :) = [830, 130];
-suspect(9, :) = [830, 40];
-suspect(10, :) = [900, 84];
-suspect(11, :) = [900, 176];
-suspect(12, :) = [966, 130];
-
-suspect(13, :) = [900, 342];
-suspect(14, :) = [830, 296];
-suspect(15, :) = [830, 388];
-
-suspect(16, :) = [900, 508];
-suspect(17, :) = [966, 554];
+n = 4;
+D_0 = 4;
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 for k = 1: size(suspect, 1)
     for i = 1 : PQ(1)
@@ -77,7 +105,7 @@ for k = 1: size(suspect, 1)
 end
 
 % Printing H (!FOR TEST!)
-%figure, imshow(H);
+figure, imshow(H);
 
 % Printing F (!FOR REPORT!)
 figure, imshow(log(1+abs((F))), []);

@@ -27,7 +27,7 @@ figure,imshow(log(1+abs((F))), []);
 
 % Parameters
 k = 2;
-n = 5;
+n = 2;
 D_0 = 40;
 
 % Generating 1 + k*[1 - H_LP(u, v)]
@@ -45,10 +45,10 @@ end
 F = F .* H;
 
 % Printing H (!FOR REPORT!)
-figure, imshow(H);
+%figure, imshow(H);
 
 % Printing F (!FOR REPORT!)
-figure, imshow(log(1+abs((F))), []);
+%figure, imshow(log(1+abs((F))), []);
 
 %
 % ToDo

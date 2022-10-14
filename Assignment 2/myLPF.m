@@ -43,10 +43,10 @@ end
 F = H .* F;
 
 % Printing H (!FOR REPORT!)
-figure, imshow(H);
+%figure, imshow(H);
 
 % Printing F (!FOR REPORT!)
-figure,imshow(log(1+abs((F))), []);
+%figure,imshow(log(1+abs((F))), []);
 
 
 %
