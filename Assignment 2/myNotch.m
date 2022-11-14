@@ -78,7 +78,6 @@ suspect = zeros(n_point, 2);
 
 for i = 1 : n_point
     suspect(2*(i-1) + 1, :) = [786, 662 + 24 * i];
-    suspect(2*(i-1) + 2, :) = [758, 662 + 24 * i];
 end
 
 n = 4;
