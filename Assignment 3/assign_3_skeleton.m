@@ -16,7 +16,7 @@ Img=double(Img(:,:,1));
 %
 % Parameter setting - modify as you wish
 %
-dt = 0.8;  % time step
+dt = 0.5;  % time step
 c = 1.0;  % weight for expanding term
 niter = 400; % max # of iterations
 

@@ -46,7 +46,8 @@ for i = 1: numRows
 end
 
 
-dPhi = (xgrad.^2 + ygrad.^2 + 0.00000001).^(1/2); % mag(grad(phi))
+dPhi = (xgrad.^2 + ygrad.^2 + eps).^(1/2); % mag(grad(phi))
+% added epsilon.
 
 kappa = divergence(xgrad./dPhi, ygrad./dPhi); % curvature
 
