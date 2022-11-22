@@ -35,7 +35,48 @@ phi(10:numRows-10, 10:numCols-10)=-2;
 %
 
 % ToDO ------------------------
-g = .....;
+h = fspecial('gaussian',5,1.0);
+gb = imfilter(Img,h,'symmetric');  % 'gb' stands for gaussian_blurred
+
+xgrad = zeros(numRows, numCols);
+ygrad = zeros(numRows, numCols);
+
+% Calculating Gradient Along X-axis.
+for i = 1: numRows
+    for j = 1: numCols
+        if j == 1           % Leftmost: Forward Difference
+            grad = gb(i, j+1) - gb(i, j);
+        elseif j == numCols % Rightmost: Backward Difference
+            grad = gb(i, j) - gb(i, j-1);
+        else                % Central Difference
+            grad = (gb(i, j+1) - gb(i, j-1)) / 2;
+        end
+
+        xgrad(i, j) = grad;
+    end
+end
+
+% Calculating Gradient Along Y-axis.
+for i = 1: numRows
+    for j = 1: numCols
+        if i == 1           % Topmost: Forward Difference
+            grad = gb(i+1, j) - gb(i, j);
+        elseif i == numRows % Bottommost: Backward Difference
+            grad = gb(i, j) - gb(i-1, j);
+        else                % Central Difference
+            grad = (gb(i+1, j) - gb(i-1, j)) / 2;
+        end
+
+        ygrad(i, j) = grad;
+    end
+end
+
+mag = (xgrad.^2 + ygrad.^2).^(1/2);
+
+
+% Edge Indicator Term.
+p = 2;
+g = 1 ./ (1 + (mag.^p));
 
 % -----------------------------
 
