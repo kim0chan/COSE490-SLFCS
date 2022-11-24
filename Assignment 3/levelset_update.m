@@ -16,13 +16,10 @@ phi_out = phi_in;
 [numRows,numCols] = size(phi_in);
 
 [xgrad, ygrad] = gradient(phi_in);
-[xxxgrad, ooo] = gradient(xgrad);
-[ooo, yyygrad] = gradient(ygrad);
-dPhi = (xgrad.^2 + ygrad.^2 + eps).^(1/2); % mag(grad(phi))
 
-[xygrad, ooo] = gradient(ygrad);
 xxgrad = zeros(numRows, numCols);
 yygrad = zeros(numRows, numCols);
+xygrad = zeros(numRows, numCols);
 
 for i = 1: numRows
     for j = 1: numCols
@@ -48,7 +45,21 @@ for i = 1: numRows
     end
 end
 
+for i = 1: numRows
+    for j = 1: numCols
+        if j == 1           % Leftmost: Forward Difference
+            grad = ygrad(i, j+1) - ygrad(i, j);
+        elseif j == numCols % Rightmost: Backward Difference
+            grad = ygrad(i, j) - ygrad(i, j-1);
+        else                % Central Difference
+            grad = (ygrad(i, j+1) - ygrad(i, j-1)) / 2;
+        end
 
+        xygrad(i, j) = grad;
+    end
+end
+
+dPhi = (xgrad.^2 + ygrad.^2 + eps).^(1/2); % mag(grad(phi))
 % added epsilon.
 
 %kappa = divergence(xgrad./dPhi, ygrad./dPhi); % curvature
