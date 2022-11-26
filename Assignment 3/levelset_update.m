@@ -14,12 +14,50 @@ phi_out = phi_in;
 % Calculating Gradient Along X-axis.
 
 [numRows,numCols] = size(phi_in);
+xgrad = zeros(numRows, numCols);
+ygrad = zeros(numRows, numCols);
+xygrad = zeros(numRows, numCols);
 
-[xgrad, ygrad] = gradient(phi_in);
+for i = 1: numRows
+    for j = 1: numCols
+
+        if j == 1           % Leftmost: Forward Difference
+            grad_x = phi_in(i, j+1) - phi_in(i, j);
+        elseif j == numCols % Rightmost: Backward Difference
+            grad_x = phi_in(i, j) - phi_in(i, j-1);
+        else                % Central Difference
+            grad_x = (phi_in(i, j+1) - phi_in(i, j-1)) / 2;
+        end
+
+        if i == 1           % Topmost: Forward Difference
+            grad_y = phi_in(i+1, j) - phi_in(i, j);
+        elseif i == numRows % Bottommost: Backward Difference
+            grad_y = phi_in(i, j) - phi_in(i-1, j);
+        else                % Central Difference
+            grad_y = (phi_in(i+1, j) - phi_in(i-1, j)) / 2;
+        end
+        
+        xgrad(i, j) = grad_x;
+        ygrad(i, j) = grad_y;
+    end
+end
+
+for i = 1: numRows
+    for j = 1: numCols
+        if j == 1           % Leftmost: Forward Difference
+            grad = ygrad(i, j+1) - ygrad(i, j);
+        elseif j == numCols % Rightmost: Backward Difference
+            grad = ygrad(i, j) - ygrad(i, j-1);
+        else                % Central Difference
+            grad = (ygrad(i, j+1) - ygrad(i, j-1)) / 2;
+        end
+
+        xygrad(i, j) = grad;
+    end
+end
 
 xxgrad = zeros(numRows, numCols);
 yygrad = zeros(numRows, numCols);
-xygrad = zeros(numRows, numCols);
 
 for i = 1: numRows
     for j = 1: numCols
@@ -45,26 +83,12 @@ for i = 1: numRows
     end
 end
 
-for i = 1: numRows
-    for j = 1: numCols
-        if j == 1           % Leftmost: Forward Difference
-            grad = ygrad(i, j+1) - ygrad(i, j);
-        elseif j == numCols % Rightmost: Backward Difference
-            grad = ygrad(i, j) - ygrad(i, j-1);
-        else                % Central Difference
-            grad = (ygrad(i, j+1) - ygrad(i, j-1)) / 2;
-        end
-
-        xygrad(i, j) = grad;
-    end
-end
 
 dPhi = (xgrad.^2 + ygrad.^2 + eps).^(1/2); % mag(grad(phi))
 % added epsilon.
 
 %kappa = divergence(xgrad./dPhi, ygrad./dPhi); % curvature
 kappa = dPhi.^(-3) .* (xxgrad.*ygrad.*ygrad + (-2).*xgrad.*ygrad.*xygrad + yygrad.*xgrad.*xgrad);
-%kappa = xxgrad + yygrad;
 
 smoothness = g.*kappa.*dPhi;
 expand = c*g.*dPhi;
