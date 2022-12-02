@@ -12,7 +12,9 @@ close all;
 %
 I=imread('building-600by600.tif');
 %I=imread('checkerboard-noisy2.tif');
+%I = medfilt2(I, [5 5]);
 Img=double(I(:,:,1));
+
 
 %
 % ToDo: Compute R
@@ -29,7 +31,6 @@ xgrad_smth = imfilter(xxgrad, f, 'symmetric');
 ygrad_smth = imfilter(yygrad, f, 'symmetric');
 xygrad_smth = imfilter(xygrad, f, 'symmetric');
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 H = zeros(2, 2, numRows, numCols);
 R = zeros(numRows, numCols);
 for i = 1: numRows
@@ -41,21 +42,7 @@ for i = 1: numRows
     end
 end
 
-%{
-H = zeros(2, 2);
-H(1, 1) = sum(xgrad_2, 'all');
-H(1, 2) = sum(xygrad, 'all');
-H(2, 1) = sum(xygrad, 'all');
-H(2, 2) = sum(ygrad_2, 'all');
 
-k = 0.5;
-det_H = det(H);
-trace_H = trace(H);
-
-R = det_H - k * trace_H^2;
-%}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 k = 0.03;
 sum = 0;
 for i = 1: numRows
@@ -77,12 +64,13 @@ c = jet;
 colormap(c);
 colorbar;
 
+%% 
 
 %
 % ToDo: Threshold R & Collect Local Maximum Points
 %
 
-threshold = abs(30000 * avg);
+threshold = 30000 * abs(avg);
 
 TH = zeros(numRows, numCols);
 for i = 1: numRows
@@ -93,11 +81,12 @@ for i = 1: numRows
     end
 end
 
-mask = TH .* R;
-LM = imregionalmax(mask);
+masked = TH .* R;
+LM = imregionalmax(masked);
 
 %% Report Images
-%imshow(mask, []);
+%imshow(TH, []);
+%imshow(masked, []);
 %imshow(LM, []);
 
 
