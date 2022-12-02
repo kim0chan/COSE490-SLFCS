@@ -11,7 +11,7 @@ close all;
 % Loading input image
 %
 I=imread('building-600by600.tif');
-%Img=imread('checkerboard-noisy2.tif');
+%I=imread('checkerboard-noisy2.tif');
 Img=double(I(:,:,1));
 
 %
@@ -63,28 +63,10 @@ for i = 1: numRows
         det_H = det(H(:, :, i, j));
         trace_H  = trace(H(:, :, i, j));
         R(i, j) = det_H - k * (trace_H^2);
-        sum = sum + R(i, j);
+        sum = R(i, j);
     end
 end
 avg = sum / (numRows * numCols);
-
-for i = 1: numRows
-    for j = 1: numCols
-        det_H = det(H(:, :, i, j));
-        trace_H  = trace(H(:, :, i, j));
-        R(i, j) = det_H - k * (trace_H^2);
-        sum = sum + R(i, j);
-    end
-end
-
-%
-% Example of collecting points and plot them
-%
-% (10,1), (15,2), (20,3)
-%
-location = [10 15 20; 1 2 3]'
-points = cornerPoints(location)
-plot(points)
 
 %
 % ToDo: Visualize R values using jet colormap
@@ -95,17 +77,56 @@ c = jet;
 colormap(c);
 colorbar;
 
+
 %
 % ToDo: Threshold R & Collect Local Maximum Points
 %
 
-...
+threshold = abs(30000 * avg);
+
+TH = zeros(numRows, numCols);
+for i = 1: numRows
+    for j = 1: numCols
+        if R(i, j) > threshold
+            TH(i, j) = 1;
+        end
+    end
+end
+
+mask = TH .* R;
+LM = imregionalmax(mask);
+
+%% Report Images
+%imshow(mask, []);
+%imshow(LM, []);
+
+
+%
+% Example of collecting points and plot them
+%
+% (10,1), (15,2), (20,3)
+%
+%location = [10 15 20; 1 2 3]'
+%points = cornerPoints(location)
+%plot(points)
+count = 1;
+location = [0 ; 0]'
+for i = 1: numRows
+    for j = 1: numCols
+        if LM(i, j) > 0
+            location(count, 2) = i;
+            location(count, 1) = j;
+            count = count + 1;
+        end
+    end
+end
+points = cornerPoints(location);
 
 
 %
 % Visualize corner points over the input image
 %
-%{
+
 imshow(I)
 
 hold on
@@ -113,4 +134,4 @@ hold on
 plot(points)
 
 hold off
-%}
+
